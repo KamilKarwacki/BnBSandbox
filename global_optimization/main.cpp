@@ -1,18 +1,10 @@
 #include <iostream>
-#include <chrono>
-#include <numeric>
-#include "BenchmarkManager.h"
 
-#include "BnB_MPI_Solver.h"
-#include "BnB_OMP_Solver.h"
-#include "BnB_Serial_Solver.h"
-#include "TSP.h"
-#include "IP.h"
 #include "boost/numeric/interval.hpp"
 #include "boost/numeric/interval/io.hpp"
 #include "Knapsack.h"
 #include "ProblemFactory.h"
-#include "TreeGenerator.h"
+#include "BenchmarkManager.h"
 
 
 
@@ -128,38 +120,20 @@ int main(int argc, char* argv[]) {
     //GatherTreeData(argc, argv, 5122111);
 
 
-    /*
-    Test_Simplex_lib();
-    int n = 2, m = 2;
-    std::vector<std::vector<double>> A;
-    A.resize(m);
-    for(int i = 0; i < m; i++)
-        A[i].resize(m);
-    initA(A);
-
-    std::vector<double> b(m);
-    initb(b);
-    std::vector<double> c(n);
-    initc(c);
-    int v = 0;
-     */
-
-
     std::vector<interval> domain;
     SetProblemParams(domain);
 
     BenchmarkManager manager;
 
-    auto [weights, values, W] =  BnB::Knapsack::GenerateCorrelatedProblemConstants(std::pair(1,100), 120, 1, 0.05);
-    ///manager.SetKConsts({30,50,40,10,40,30,10},{60,60,40,10,20,10,3},100);
-    manager.SetKConsts(weights,values, W);
+    ///auto [weights, values, W] =  BnB::Knapsack::GenerateCorrelatedProblemConstants(std::pair(1,100), 120, 1, 0.05);
+    manager.SetKConsts({30,50,40,10,40,30,10},{60,60,40,10,20,10,3},100);
 	///for(int i = 0; i < 1; i++){
     manager.SetIConsts(domain);
     ///manager.SetTConsts(BnB::TSP::GenerateRandomMatrix(12, {10,20}, i*10));
     //manager.SetLConsts(A,b,c,v);
 
-//    auto result = manager.Benchmark(1,ProblemClass::INTERVAL, argv, argc);
- //   std::cout << "avarage runtime " << result.first << " +- " << result.second<< std::endl;
+    auto result = manager.Benchmark(1,ProblemClass::INTERVAL, argv, argc);
+    std::cout << "avarage runtime " << result.first << " +- " << result.second<< std::endl;
 
     auto result2 = manager.Benchmark(1,ProblemClass::KNAPSACK, argv, argc);
     std::cout << "avarage runtime " << result2.first << " +- " << result2.second<< std::endl;

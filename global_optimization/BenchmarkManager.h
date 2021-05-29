@@ -162,6 +162,7 @@ std::shared_ptr<BnB::Solver<P,S,Type>> BenchmarkManager::GetSolver(Parallelizati
                     ->TraversMode(params.mode)
                     ->MaximalPackageSize(params.PackSize);
             static_cast<BnB::MPI_Scheduler_Hybrid<P,S,Type>*>(solver->SetSchedulerParameters())->Threads(params.OpenMPThreads);
+            static_cast<BnB::MPI_Scheduler_WorkerOnly<P,S,Type>*>(solver->SetSchedulerParameters())->TermCheckFrequency(params.TermFreq);
             return solver;
         }
         case Parallelization::OMP:
@@ -176,8 +177,9 @@ std::shared_ptr<BnB::Solver<P,S,Type>> BenchmarkManager::GetSolver(Parallelizati
         }
         case Parallelization::SERIAL:
             auto solver = std::make_shared<BnB::Solver_Serial<P, S, Type>>();
-            solver->SetEps(params.eps);
-            solver->SetTraversalMode(params.mode);
+            solver->SetSchedulerParameters()
+                    ->Eps(params.eps)
+                    ->TraversMode(params.mode);
             return solver;
     }
 }

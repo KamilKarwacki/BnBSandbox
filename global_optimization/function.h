@@ -2,12 +2,13 @@
 #include "boost/numeric/interval.hpp"
 #include "boost/numeric/interval/io.hpp"
 #include "Objectives/objective.h"
+#include "MPI_Message_Encoder.h"
 
 
 
 template<typename T>
 void SetProblemParams(std::vector<T>& domain) {
-    size_t n = 3;
+    size_t n = 6;
     //domain.resize(n,T(-512.0,512.0));
     domain.resize(n,T(-5.0, 5.1));
     //domain.push_back({-0.2, 0.2});

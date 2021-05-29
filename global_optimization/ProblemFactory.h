@@ -4,6 +4,7 @@
 #include "boost/numeric/interval.hpp"
 #include "boost/numeric/interval/io.hpp"
 #include "function.h"
+#include <iomanip>
 
 // ------------------------------------------------- USER STUFF --------------------------------------------------------
 namespace Problems {
